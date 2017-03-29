@@ -5,6 +5,11 @@
 #ifndef LEE_LEE124_H
 #define LEE_LEE124_H
 
+#include <stack>
+#include <queue>
+
+using namespace std;
+
 struct TreeNode {
   int val;
   TreeNode *left;
@@ -39,5 +44,53 @@ class Solution {
     return TESTPOSADD(maxSide, root->val);
   }
 };
+
+class Solution_No_Recrusive {
+ public:
+  int maxPathSum(TreeNode *root) {
+    stack<TreeNode*> calStack;
+    queue<TreeNode *> bfsQueue;
+
+    bfsQueue.push(root);
+
+    while (!bfsQueue.empty()) {
+      TreeNode * cur = bfsQueue.front();
+      bfsQueue.pop();
+
+      if (cur->left) {
+        bfsQueue.push(cur->left);
+      }
+
+      if (cur->right) {
+        bfsQueue.push(cur->right);
+      }
+
+      calStack.push(cur);
+    }
+
+    int maxValue = -99999999;
+
+    while (!calStack.empty()) {
+      TreeNode *cur = calStack.top();
+      calStack.pop();
+
+      int left = cur->left != nullptr ? cur->left->val : -9999999;
+      int right = cur->right != nullptr ? cur->right->val : -9999999;
+
+      int maxLength = TESTPOSADD(left, cur->val);
+      maxLength = TESTPOSADD(right, maxLength);
+
+      maxValue = MAX(maxValue, maxLength);
+
+      int maxSide = MAX(left, right);
+
+      cur->val = TESTPOSADD(maxSide, cur->val);
+    }
+
+    return maxValue;
+  }
+
+};
+
 
 #endif //LEE_LEE124_H
