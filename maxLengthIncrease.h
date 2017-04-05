@@ -127,16 +127,22 @@ class SolutionON2 {
 
 class SolutionONLOGN {
  public:
-  int maxLength(vector<int> &list) {
-    int max = new int[list.size()];
-    for (typename vector<int>::iterator iter = list.begin(); iter != list.end(); iter++) {
+  int lengthOfLIS(vector<int> &nums) {
+    int *max = new int[nums.size()];
+    for (typename vector<int>::iterator iter = nums.begin(); iter != nums.end(); iter++) {
       scanAndReplace(max, *iter);
     }
 
-
+    return length;
   }
 
-  void scanAndReplace(int &max[], int value) {
+
+  void scanAndReplace(int max[], int value) {
+
+    if (length == 0) {
+      max[length++] = value;
+      return;
+    }
 
     if (max[0] > value) {
       max[0] = value;
@@ -144,7 +150,7 @@ class SolutionONLOGN {
     }
 
     if (max[length - 1] < value) {
-      max[++length] = value;
+      max[length++] = value;
       return;
     }
 
@@ -167,12 +173,15 @@ class SolutionONLOGN {
       }
     }
 
-    if (max[bottom] > value) max[bottom] = value;
+    if (max[bottom] >= value) max[bottom] = value;
     else max[bottom + 1] = value;
   }
 
  protected:
   int length = 0;
 };
+
+// Two dimension's incremental sequence
+
 
 #endif //LEE_MAXLENGTHINCREASE_H
